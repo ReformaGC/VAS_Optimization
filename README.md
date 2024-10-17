@@ -1,7 +1,6 @@
 # VAS_Optimization
- DHS Survey Spatial Analysis to optimize Vitamin A Supplementation (VAS) Coverage for children in African countries.
+DHS Survey Spatial Analysis & Costing Report for Optimizing Vitamin A Supplementation (VAS) Coverage in African Countries.
  Project developed for Reforma Global Consulting. 
- Some results or datasets may be hidden due to privacy policies. Only public datasets (from DHS Survey, GADM, OpenStreetMap) remain in the repository.
+ Some results, information or datasets may be hidden due to privacy policies. Only public datasets or open source datasets remain in the repository.
 -----------------------------------------------------------------------------------------------------------------------------------------------
-Carried out an extensive ETL processes to consolidate sample data and georeferenced information. Developed econometric models (Probit, Logistic Regression, Ridge Regression), Monte Carlo
-Simulation, Interactive Decision Tree, and GIS Visualizations. 
+We conducted an extensive GPS based data extraction, transformation and load (ETL) process, consolidating household sample data from DHS Survey datasets with geospatial open sources like GADM and OpenStreetMap. Using econometric models we assessed the impact of key factors such as household’s wealth and distance to the nearest health facility on VAS Coverage outcomes. Afterwards, we modeled different scenarios to evaluate the changes in coverage outcomes while changing service delivery modality, average distance and supplies availability. At the same time, we estimate the average costs of each service modality for each child covered.
