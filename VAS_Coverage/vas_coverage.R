@@ -72,42 +72,32 @@ congo = congo_HR %>%
             residence = ifelse(hv025 == 1, "Urban", "Rural")
   ) 
 
-congo$residence_binary = ifelse(congo$residence_id == 1, 1, 0) # Convert to binary: 1 for Urban, 0 for Rural
-#congo_design = svydesign(id = ~psu, weights = ~wt, data = congo, nest = TRUE)
-urban_households_proportion = plyr::ddply(congo, ~region_id , summarise , mean = weighted.mean(residence_binary, wt)) 
-rural_households_proportion = 1 - urban_households_proportion
-rural_households_proportion$region_id = 1:11
+congo$residence_binary = ifelse(congo$residence_id == 1, 1, 0)
+congo_design = svydesign(id = ~psu, weights = ~wt, data = congo, nest = TRUE)
 
-proportions_urban = urban_households_proportion %>% 
-  dplyr::select(region_id, mean) %>% 
-  rename(residence_prop = mean) %>% 
+urban_households_proportion = svyby(~residence_binary, ~region_id, congo_design, svymean, na.rm = TRUE) %>%
+  rename(residence_prop = residence_binary)
+
+urban_households_proportion = urban_households_proportion %>%
   mutate(residence = "Urban")
-proportions_rural = rural_households_proportion %>% 
-  dplyr::select(region_id, mean) %>% 
-  rename(residence_prop = mean) %>% 
-  mutate(residence = "Rural")
-proportions = bind_rows(proportions_urban, proportions_rural) %>%
+
+rural_households_proportion = urban_households_proportion %>%
+  mutate(residence_prop = 1 - residence_prop, residence = "Rural")
+
+proportions = bind_rows(urban_households_proportion, rural_households_proportion) %>%
   arrange(region_id, residence)
+
 congo = congo %>%
   left_join(proportions, by = c("region_id", "residence")) %>%
-  mutate(
-    residence_perc = residence_prop * 100
-  )
-proportions$country = "DRC"
+  mutate(residence_perc = residence_prop * 100)
 
-table(congo$residence_perc)
-table(congo$residence_prop)
-congo = as.data.frame(congo)
-proportions = as.data.frame(proportions)
-proportions = rename(proportions, household_prop = residence_prop)
-proportions
+path = "C:\\Users\\stefa\\Documents\\Code\\VAS_Optimization\\VAS_Coverage\\results\\"
+write.xlsx(congo, file.path(path, "congo_hh.xlsx"))
+write.csv(proportions, file.path(path, "congo_hhproportions.csv"))
+write.xlsx(proportions, file.path(path, "congo_hhproportions.xlsx"))
 
-path = 'C:\\Users\\stefa\\Documents\\Code\\VAS_Optimization/VAS_Coverage/results/'
-openxlsx::write.xlsx(congo,  paste(path,'congo_hh.xlsx', sep = ''))
-write.csv(proportions, paste(path,'congo_hhproportions.csv', sep = ''))
-openxlsx::write.xlsx(proportions,  paste(path,'congo_hhproportions.xlsx', sep = ''))
+rm(list = ls())
 
-rm(list=ls())
 
 # # #
 
