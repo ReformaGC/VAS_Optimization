@@ -1,5 +1,5 @@
 # VAS_Optimization
-DHS Survey Spatial Analysis & Costing Report for Optimizing Vitamin A Supplementation (VAS) Coverage in African Countries.
+DHS Survey Spatial Analysis and Interactive Decision Tree Model for Optimizing Vitamin A Supplementation (VAS) Coverage in African Countries.
  Project developed for Reforma Global Consulting. 
  Some results, code chunks, information and datasets may be hidden due to privacy policies.
 -----------------------------------------------------------------------------------------------------------------------------------------------
